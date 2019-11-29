@@ -49,8 +49,6 @@
     <Compile Include="Attribute\GTable.cs" />
     <Compile Include="GDataRunner.cs" />
     <Compile Include="DataSource.cs" />
-    <Compile Include="Entities\Enemy.cs" />
-    <Compile Include="Entities\GameDataAsset.cs" />
     <Compile Include="EntityLoader.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="Mapper\ColumnMapper.cs" />
