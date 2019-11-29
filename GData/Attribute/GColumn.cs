@@ -1,5 +1,3 @@
-using System;
-
 namespace GData.Attribute {
     public class GColumn : System.Attribute {
         public string ColumnName;
