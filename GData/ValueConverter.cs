@@ -21,7 +21,7 @@ namespace GData {
             }
 
             if (type == typeof(bool)) {
-                return value == "true";
+                return value.ToLower() == "true";
             }
             
             if (type == typeof(float)) {
