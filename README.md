@@ -25,32 +25,23 @@ GameDataAsset asset = loader.Load(typeof(GameDataAsset)); // Recursively loads f
 List<Enemy> enemies = loader.Load(typeof(Enemy)); // Loads all entities by class
 ```
 
-Unity example
+### Unity usage example
+- Create class for game data like this
+- create instance of it in Unity
+- Fill credentials fields
+- hit "Reload from GData!" in context menu.
 ```c#
-public class GameDataAsset : ScriptableObject
-    {
-        [GData.Attribute.GTable("Rooms")]
-        public Room[] Levels;
-        
-        [GData.Attribute.GTable("Trees")]
-        public Seed[] Seeds;
-        
-        [GData.Attribute.GTable("Leveling")]
-        public Leveling[] Leveling;
-        
-        public string GDataSpreadsheetId;
-        public string GDataApiKey;
-        
-        [ContextMenu("Reload from GData!")]
-        public void Reload()
-        {
-            Debug.Log("[GameData] Loading!");
-            DataSource ds = new DataSource(GDataApiKey, GDataSpreadsheetId);
-            EntityLoader loader = new EntityLoader(ds);
-            loader.LoadToInstance(this);
-            
-            EditorUtility.SetDirty(this);
-            AssetDatabase.SaveAssets();
-        }
-    }
+[CreateAssetMenu(menuName = "<MyGame>/GameDataAsset")]
+public class GameDataAsset : GData.Unity.GameDataAsset { // This is Scriptable object with helpers
+    [GData.Attribute.GTable("Rooms")]
+    public Room[] Levels;
+    
+    [GData.Attribute.GTable("Trees")]
+    public Seed[] Seeds;
+    
+    [GData.Attribute.GTable("Leveling")]
+    public Leveling[] Leveling;
+}
 ```
+
+ 
