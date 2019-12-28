@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Popcron.Sheets;
 
 namespace GData {
@@ -46,9 +47,15 @@ namespace GData {
 
         private Spreadsheet GetSpreadsheet() {
             if (_cache == null) {
-                SheetsSerializer.Serializer = new JsonSerializer();
-                Authorization authorization = Authorization.Authorize(_apiKey).Result;
-                _cache = Spreadsheet.Get(_spreadsheetId, authorization).Result;
+                JsonSerializer serializer = new JsonSerializer();
+
+                string url = $"https://sheets.googleapis.com/v4/spreadsheets/{_spreadsheetId}?key={_apiKey}&includeGridData=true";
+                
+                WebClient client = new WebClient();
+                string rawString = client.DownloadString(url);
+                SpreadsheetRaw raw = serializer.DeserializeObject<SpreadsheetRaw>(rawString);
+                
+                _cache = new Spreadsheet(raw);
             }
 
             return _cache;

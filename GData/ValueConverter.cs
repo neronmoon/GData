@@ -23,6 +23,14 @@ namespace GData {
             if (type == typeof(bool)) {
                 return value == "true";
             }
+            
+            if (type == typeof(float)) {
+                return float.Parse(value);
+            }
+            
+            if (type == typeof(double)) {
+                return double.Parse(value);
+            }
 
             return System.Convert.ChangeType(value, type);
         }

@@ -20,25 +20,31 @@ namespace GData {
             _converter = converter;
         }
 
+        public void LoadToInstance<T>(T instance) {
+            Load(typeof(T), _source, instance);
+        }
+        
         public dynamic Load(Type type) {
             return Load(type, _source);
         }
 
-        public dynamic Load(Type type, DataSource source) {
+        public dynamic Load(Type type, DataSource source, object instance = null) {
             if (HasAttribute<GTable>(type)) { // if passed table class
                 GTable tableAttr = (GTable) GetAttribute<GTable>(type);
                 return LoadTable(type, source, tableAttr.TableName);
             }
 
             // if passed any other class with table fields
-            object instance = Activator.CreateInstance(type);
+            if (instance == null) {
+                instance = Activator.CreateInstance(type);                
+            }
             foreach (FieldInfo field in type.GetFields()) {
                 Type searchType = field.FieldType;
                 if (searchType.GetInterfaces().Contains(typeof(IEnumerable))) {
                     searchType = field.FieldType.GetElementType();
                 }
 
-                if (HasAttribute<GTable>(searchType)) {
+                if (searchType != null && HasAttribute<GTable>(searchType)) {
                     dynamic value = Load(searchType, source);
                     field.SetValue(instance, _converter.ConvertEnumerable(value, field.FieldType));
                 }
@@ -66,6 +72,10 @@ namespace GData {
                 Dictionary<string, string> fieldToValueMap = new Dictionary<string, string>(columnToFieldMap.Count);
                 foreach (KeyValuePair<int, string> pair in columnIdToFieldMap) {
                     fieldToValueMap[pair.Value] = data[rowId][pair.Key];
+                }
+
+                if (fieldToValueMap.Values.All(s => s == null)) {
+                    continue;
                 }
 
                 result.Add(LoadRow(type, fieldToValueMap));
