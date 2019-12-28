@@ -23,6 +23,9 @@ DataSource ds = new DataSource(
 EntityLoader loader = new EntityLoader(ds);
 GameDataAsset asset = loader.Load(typeof(GameDataAsset)); // Recursively loads fields 
 List<Enemy> enemies = loader.Load(typeof(Enemy)); // Loads all entities by class
+
+GameDataAsset instance = new GameDataAsset();
+loader.LoadToInstance(instance); // Loading to existing instance
 ```
 
 ### Unity usage example
