@@ -27,24 +27,3 @@ List<Enemy> enemies = loader.Load(typeof(Enemy)); // Loads all entities by class
 GameDataAsset instance = new GameDataAsset();
 loader.LoadToInstance(instance); // Loading to existing instance
 ```
-
-### Unity usage example
-- Create class for game data like this
-- create instance of it in Unity
-- Fill credentials fields
-- hit "Reload from GData!" in context menu.
-```c#
-[CreateAssetMenu(menuName = "<MyGame>/GameDataAsset")]
-public class GameDataAsset : GData.Unity.GameDataAsset { // This is Scriptable object with helpers
-    [GData.Attribute.GTable("Rooms")]
-    public Room[] Levels;
-    
-    [GData.Attribute.GTable("Trees")]
-    public Seed[] Seeds;
-    
-    [GData.Attribute.GTable("Leveling")]
-    public Leveling[] Leveling;
-}
-```
-
- 
