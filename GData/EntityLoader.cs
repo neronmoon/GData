@@ -25,19 +25,16 @@ namespace GData {
         }
         
         public dynamic Load(Type type) {
-            return Load(type, _source);
+            return Load(type, _source, Activator.CreateInstance(type));
         }
 
-        public dynamic Load(Type type, DataSource source, object instance = null) {
+        public dynamic Load(Type type, DataSource source, object instance) {
             if (HasAttribute<GTable>(type)) { // if passed table class
                 GTable tableAttr = (GTable) GetAttribute<GTable>(type);
                 return LoadTable(type, source, tableAttr.TableName);
             }
 
             // if passed any other class with table fields
-            if (instance == null) {
-                instance = Activator.CreateInstance(type);                
-            }
             foreach (FieldInfo field in type.GetFields()) {
                 Type searchType = field.FieldType;
                 if (searchType.GetInterfaces().Contains(typeof(IEnumerable))) {
@@ -45,7 +42,7 @@ namespace GData {
                 }
 
                 if (searchType != null && HasAttribute<GTable>(searchType)) {
-                    dynamic value = Load(searchType, source);
+                    dynamic value = Load(searchType, source, instance);
                     field.SetValue(instance, _converter.ConvertEnumerable(value, field.FieldType));
                 }
             }
