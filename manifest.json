@@ -1,0 +1,11 @@
+  
+{
+  "name": "com.neronmoon.gdata",
+  "displayName": "GData",
+  "version": "0.0.1",
+  "unity": "2018.3",
+  "description": "GData is simple wrapper on google sheets",
+  "keywords": [ "google sheets", "game data"],
+  "category": "editor extensions",
+  "dependencies": {}
+}
