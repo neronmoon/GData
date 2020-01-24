@@ -25,7 +25,7 @@ namespace GData {
             }
             
             if (type == typeof(float)) {
-                return float.Parse(value);
+                return float.Parse(value.Replace(".", ","));
             }
             
             if (type == typeof(double)) {
