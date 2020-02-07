@@ -11,7 +11,26 @@ public class GameDataAsset {
 ```c#
 [GTable("ENEMIES")]
 public class Enemy {
-    [GColumn("NAME")] public string[] Name;
+    [GColumn("NAME")] public string Name;
+    
+    // This will be mapped by Enemy->Loot column using Loot's Index field
+    [GColumn("LOOT")] public Loot Loot; 
+}
+```
+
+```c#
+[GTable("LOOT")]
+public class Loot {
+    [GColumn("NAME"), GIndex] public string Name;
+
+    // GConverter used for defining field-level converters. It also can be defined on Rarity Class
+    [GColumn("RARITY"), GConverter(typeof(RarityConverter))] public Rarity Rarity;
+}
+
+public class RarityConverter : IConverter<Rarity> {
+    Rarity Convert(string value) {
+        return new Rarity(value);
+    }
 }
 ```
 
